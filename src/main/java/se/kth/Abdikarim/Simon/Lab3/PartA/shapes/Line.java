@@ -58,7 +58,6 @@ public class Line extends Shape
     {
         gc.setStroke( getColor( ) );
         gc.strokeLine( getX( ), getY( ), x2, y2);
-        width = gc.getLineWidth();
     }
 
     @Override
