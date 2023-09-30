@@ -41,12 +41,11 @@ public class Circle extends FillableShape
         }
 
         if (getY() < boxY) {
-            setVelocity( Math.abs(getDy()), getDx() );
+            setVelocity(getDx(), Math.abs(getDy()) );
         }
         else if ((getY()) > boxHeight - diameter) {
-            setVelocity( -Math.abs(getDy()), getDx() );
+            setVelocity( getDx(),  -Math.abs(getDy()) );
         }
-
     }
 
     @Override
