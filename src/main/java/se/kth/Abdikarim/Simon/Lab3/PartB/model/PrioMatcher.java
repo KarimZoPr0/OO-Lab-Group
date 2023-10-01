@@ -2,7 +2,7 @@ package se.kth.Abdikarim.Simon.Lab3.PartB.model;
 
 public class PrioMatcher implements ItaskMatcher
 {
-    private TaskPrio prio;
+    private final TaskPrio prio;
 
     public PrioMatcher (TaskPrio prio)
     {

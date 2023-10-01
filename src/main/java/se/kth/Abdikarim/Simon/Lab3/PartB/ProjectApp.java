@@ -1,8 +1,9 @@
-/*
-import io.ProjectsFileIO;
-import model.Project;
-import model.ProjectsManager;
-import ui.MainUI;
+package se.kth.Abdikarim.Simon.Lab3.PartB;
+
+import se.kth.Abdikarim.Simon.Lab3.PartB.io.ProjectsFileIO;
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.Project;
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.ProjectManager;
+import se.kth.Abdikarim.Simon.Lab3.PartB.ui.MainUI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,4 +50,4 @@ public class ProjectApp {
         app.run();
     }
 }
-*/
+

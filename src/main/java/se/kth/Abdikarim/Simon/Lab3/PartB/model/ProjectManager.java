@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ProjectManager
 {
-    private List< Project > projects;
+    private final List< Project > projects;
 
     private int nextProjectId;
 
@@ -61,6 +61,17 @@ public class ProjectManager
     private int getHighestId( )
     {
         return projects.stream( ).max( Project::compareTo ).map( Project::getId ).orElse( -1 );
+    }
+
+    public List< Project > getProjects( ) throws CloneNotSupportedException
+    {
+        ArrayList<Project> copiedProjects = new ArrayList<>(  );
+        for ( Project project : projects )
+        {
+            Project newProject = (Project ) project.clone();
+            copiedProjects.add(newProject);
+        }
+        return copiedProjects;
     }
 
     @Override

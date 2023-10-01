@@ -2,26 +2,26 @@ package se.kth.Abdikarim.Simon.Lab3.PartB.model;
 
 public class TakenByMatcher implements ItaskMatcher
 {
-    private String takenby;
+    private final String takenBy;
 
     public TakenByMatcher(String takenby)
     {
-        this.takenby = takenby;
+        this.takenBy = takenBy;
     }
     @Override
     public boolean match( Task task )
     {
-        return takenby.equals( task.getTakenBy() );
+        return takenBy.equals( task.getTakenBy() );
     }
 
-    public String getTakenby( )
+    public String getTakenBy( )
     {
-        return takenby;
+        return takenBy;
     }
 
     @Override
     public String toString( )
     {
-        return "takenBy: " + takenby;
+        return "takenBy: " + takenBy;
     }
 }

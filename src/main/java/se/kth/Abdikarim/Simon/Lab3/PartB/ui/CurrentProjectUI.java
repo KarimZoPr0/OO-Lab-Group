@@ -52,7 +52,7 @@ class CurrentProjectUI {
                     viewTasks(new NotDoneMatcher());
                     break;
                 case 'H':
-                    viewTasks(new PrioMatcher(Prio.High));
+                    viewTasks(new PrioMatcher(TaskPrio.High));
                     break;
                 case 'A':
                     addTask();
@@ -128,4 +128,4 @@ class CurrentProjectUI {
         }
     }
 }
-*/
+

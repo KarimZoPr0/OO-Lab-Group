@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 public class Project implements Comparable<Project>, Serializable
 {
     private List<Task> tasks;
-    private String title, description;
-    private int id,nextTaskId;
-    private LocalDate localDate;
+    private final String title;
+    private final String description;
+    private final int id;
+    private int nextTaskId;
+    private final LocalDate localDate;
 
     Project( List<Task> tasks , String title, String description, int id )
     {
@@ -36,7 +38,7 @@ public class Project implements Comparable<Project>, Serializable
 
     public Task addTask(String descr, TaskPrio prio)
     {
-        Task task = new Task( descr, prio, "?", nextTaskId++ );
+        Task task = new Task( descr, prio,null, TaskState.TO_DO, nextTaskId++ );
         tasks.add( task );
         return task;
     }
@@ -67,12 +69,12 @@ public class Project implements Comparable<Project>, Serializable
         return tasks.get( nextTaskId ).getLastUpdate();
     }
 
-    public List< Task > getTasks( )
+    public List< Task > getTasks( ) throws CloneNotSupportedException
     {
         var copiedTasks = new ArrayList<Task>(  );
         for ( Task task : tasks )
         {
-            copiedTasks.add( new Task( task.getDescription(), task.getPrio(), task.getTakenBy(), task.getId() ) );
+            copiedTasks.add( (Task) task.clone() );
         }
         return copiedTasks;
     }

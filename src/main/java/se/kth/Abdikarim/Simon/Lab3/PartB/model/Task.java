@@ -8,24 +8,26 @@ import java.util.Objects;
 
 public class Task implements Comparable<Task>, Serializable
 {
-    private String description, takenBy;
-    private int id;
+    private final String description;
+    private String takenBy;
+    private final int id;
     private TaskState state;
     private LocalDate lastUpdate;
     private TaskPrio prio;
 
-    Task( String description, TaskPrio prio , String takenBy, int id)
+    Task( String description, TaskPrio prio , String takenBy,TaskState state, int id)
     {
         this.description = description;
         this.prio = prio;
         this.id = id;
         this.takenBy = takenBy;
+        this.state = state;
         this.lastUpdate = LocalDate.now();
     }
 
     Task()
     {
-        this("New Task", TaskPrio.Low,"?", 0);
+        this("New Task", TaskPrio.Low,null,TaskState.TO_DO, 0);
     }
 
     public String getDescription( )

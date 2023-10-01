@@ -1,6 +1,9 @@
 /*
 package se.kth.Abdikarim.Simon.Lab3.PartB.ui;
 
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.Project;
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.ProjectManager;
+
 import model.Project;
 import model.ProjectsManager;
 
@@ -25,6 +28,7 @@ public class MainUI {
         // create object handling user interaction for current project
         this.currentProjectUI = new CurrentProjectUI(scan);
     }
+
 
     public void mainLoop() {
         char choice;
@@ -101,4 +105,4 @@ public class MainUI {
         System.out.println("----------");
     }
 }
-*/
+
