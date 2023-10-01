@@ -1,12 +1,10 @@
 package se.kth.Abdikarim.Simon.Lab3.PartB.model;
 
-import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Task implements Comparable<Task>, Serializable
+public class Task implements Comparable<Task>, Serializable, Cloneable
 {
     private final String description;
     private String takenBy;
@@ -60,7 +58,7 @@ public class Task implements Comparable<Task>, Serializable
         return prio;
     }
 
-    public void setTakenby(String takenBy)
+    public void setTakenBy(String takenBy)
     {
         if(this.takenBy != null) throw new IllegalStateException("Already Takenby");
         this.takenBy = takenBy;
@@ -108,6 +106,12 @@ public class Task implements Comparable<Task>, Serializable
                 ", takenBy: " + takenBy +
                 ", state: " + state +
                 ", lastUpdate: " + lastUpdate +
-                ", prio: " + prio;
+                ", prio: " + prio + "\n";
+    }
+
+    @Override
+    protected Object clone( ) throws CloneNotSupportedException
+    {
+        return super.clone( );
     }
 }

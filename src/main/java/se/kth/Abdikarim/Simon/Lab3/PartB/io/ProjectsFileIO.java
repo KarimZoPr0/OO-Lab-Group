@@ -1,7 +1,7 @@
 
 package se.kth.Abdikarim.Simon.Lab3.PartB.io;
 
-import model.Project;
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.Project;
 
 import java.io.*;
 import java.util.List;
@@ -18,11 +18,17 @@ public class ProjectsFileIO {
 /**
      * Call this method before the application exits, to store the users and projects,
      * in serialized form.
-     *//*
+ */
 
-    public static void serializeToFile(File file, List<Project> data) throws IOException {
+    public static void serializeToFile(File file, List< Project > data) throws IOException {
         // ...
         // and then, make sure the file always get closed
+        try(FileOutputStream fos = new FileOutputStream( file  );
+            BufferedOutputStream bos = new BufferedOutputStream( fos );
+            ObjectOutputStream oos = new ObjectOutputStream( bos ))
+            {
+                oos.writeObject( data );
+            }
     }
 
 
@@ -41,6 +47,7 @@ public class ProjectsFileIO {
         }
     }
 
-    private ProjectsFileIO() {}
+    private ProjectsFileIO() {
+
+    }
 }
-*/

@@ -5,7 +5,6 @@ public class NotDoneMatcher implements ItaskMatcher
     @Override
     public boolean match( Task task )
     {
-        return task.getState() == TaskState.DONE;
+        return task.getState() != TaskState.DONE;
     }
-
 }

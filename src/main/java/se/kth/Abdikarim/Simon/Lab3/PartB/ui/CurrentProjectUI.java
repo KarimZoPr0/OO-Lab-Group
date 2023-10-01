@@ -1,20 +1,15 @@
-/*
 package se.kth.Abdikarim.Simon.Lab3.PartB.ui;
 
-import model.matcher.AllTasksmatcher;
-import model.matcher.ITaskMatcher;
-import model.matcher.NotDoneMatcher;
-import model.matcher.PrioMatcher;
-import model.*;
+
+import se.kth.Abdikarim.Simon.Lab3.PartB.model.*;
 
 import java.util.List;
 import java.util.Scanner;
 
-*/
 /**
  * User interactions for a specific project, current project.
  * The user selects actions on current project in the projectLoop method.
- *//*
+ */
 
 class CurrentProjectUI {
     private Project currentProject;
@@ -32,8 +27,8 @@ class CurrentProjectUI {
         projectLoop();
     }
 
-    Project getCurrentProject() {
-        return currentProject;
+    Project getCurrentProject() throws CloneNotSupportedException {
+         return (Project) currentProject.clone();
     }
 
     void projectLoop() {
@@ -69,7 +64,7 @@ class CurrentProjectUI {
         } while (choice != 'X');
     }
 
-    private void viewTasks(ITaskMatcher matcher) {
+    private void viewTasks(ItaskMatcher matcher) {
         System.out.println(currentProject.toString());
         List<Task> tasks = currentProject.findTasks(matcher);
         printTasks(tasks);
@@ -80,7 +75,7 @@ class CurrentProjectUI {
         String descr = scan.nextLine();
         System.out.print("Priority (L)ow, (M)edium, (H)igh? ");
         char prioChar = InputUtils.scanAndReturnFirstChar(scan);
-        Prio prio = prioChar == 'H' ? Prio.High : prioChar == 'L' ? Prio.Low : Prio.Medium;
+        TaskPrio prio = prioChar == 'H' ? TaskPrio.High : prioChar == 'L' ? TaskPrio.Low : TaskPrio.Medium;
         currentProject.addTask(descr, prio);
     }
 
@@ -122,7 +117,7 @@ class CurrentProjectUI {
         if (tasks.isEmpty()) {
             System.out.println("No tasks added");
         } else {
-            for (Task task : tasks) {
+            for ( Task task : tasks) {
                 System.out.println(task.toString());
             }
         }

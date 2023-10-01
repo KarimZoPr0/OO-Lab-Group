@@ -1,28 +1,24 @@
-/*
 package se.kth.Abdikarim.Simon.Lab3.PartB.ui;
 
 import se.kth.Abdikarim.Simon.Lab3.PartB.model.Project;
 import se.kth.Abdikarim.Simon.Lab3.PartB.model.ProjectManager;
 
-import model.Project;
-import model.ProjectsManager;
 
 import java.util.List;
 import java.util.Scanner;
 
-*/
 /**
  * User interactions for managing projects.
  * The user selects actions in the mainLoop method.
- *//*
+ */
 
 public class MainUI {
 
     private final Scanner scan;
-    private final ProjectsManager manager;
+    private final ProjectManager manager;
     private final CurrentProjectUI currentProjectUI;
 
-    public MainUI(ProjectsManager manager) {
+    public MainUI(ProjectManager manager) {
         this.manager = manager;
         this.scan = new Scanner(System.in);
         // create object handling user interaction for current project
@@ -60,7 +56,7 @@ public class MainUI {
     private void findProjects() {
         System.out.print("Project name? ");
         String name = scan.nextLine();
-        List<Project> result = manager.findProjects(name);
+        List< Project > result = manager.findProjects(name);
         if (result.isEmpty()) {
             System.out.println("No matches.");
         } else {

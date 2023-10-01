@@ -1,9 +1,13 @@
 package se.kth.Abdikarim.Simon.Lab3.PartB.model;
 
+import se.kth.Abdikarim.Simon.Lab3.PartB.io.ProjectsFileIO;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-- Simon
+
 // TODO:
 /*
 1. Ta bort id parameter från Task klassen. Sätt id till newId. Tänk hur  getHighestId kan användas! - FRÅGAR ANDERS
@@ -20,24 +24,51 @@ public class ProjectMain
     {
 
         var tasks = new ArrayList<Task>(  );
-        tasks.add( task );
-        tasks.add( task1 );
-        tasks.add( task2 );
 
-        var p1 = new Project(tasks, "My Title", "My Description", 0);
+        var p1 = new Project(tasks, "Project 1", "My Description", 0);
+        p1.addTask( "Tja", TaskPrio.High );
+        p1.addTask( "Yoo", TaskPrio.Medium );
+        p1.addTask( "Hej", TaskPrio.Low );
+        p1.addTask( "Hola", TaskPrio.Low );
+        p1.addTask( "Bonjour", TaskPrio.Low );
+        p1.addTask( "Konichiwa", TaskPrio.Low );
+
+
 
         var projects = new ArrayList<Project>(  );
         projects.add( p1 );
 
-        ProjectManager pm = new ProjectManager();
+        var pm = new ProjectManager();
         pm.setProjects( projects );
+
+        List< Project > getList = null;
+        try
+        {
+            getList = pm.getProjects();
+
+            var p1Cloned = getList.get( 0 );
+            p1Cloned.addTask( "New Task", TaskPrio.High );
+            System.out.println( p1 );
+
+        } catch ( CloneNotSupportedException e )
+        {
+            throw new RuntimeException( e );
+        }
+
+        try
+        {
+            ProjectsFileIO.serializeToFile( new File( "projects.ser" ),  projects );
+        } catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
 
        // System.out.println( pm );
 
-        for ( Task myPTask : p1.getTasks() )
+        /*for ( Task myPTask : p1.getTasks() )
         {
             System.out.println( myPTask );
-        }
+        }*/
 
     }
 }

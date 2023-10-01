@@ -3,11 +3,9 @@ package se.kth.Abdikarim.Simon.Lab3.PartB.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class Project implements Comparable<Project>, Serializable
+public class Project implements Comparable<Project>, Serializable, Cloneable
 {
     private List<Task> tasks;
     private final String title;
@@ -129,7 +127,26 @@ public class Project implements Comparable<Project>, Serializable
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", nextTaskId=" + nextTaskId +
-                ", LocalDate=" + localDate;
+                ", LocalDate=" + localDate + "\n";
     }
 
+    public Task getTaskById( int id )
+    {
+        return tasks.get( id );
+    }
+
+    @Override
+    public Object clone( ) throws CloneNotSupportedException
+    {
+        Project cloned = (Project ) super.clone( );
+        List<Task> clonedTasks = new ArrayList<>(  );
+
+        for ( Task task : tasks )
+        {
+            clonedTasks.add( (Task) task.clone() );
+        }
+
+        cloned.tasks = clonedTasks;
+        return cloned;
+    }
 }

@@ -31,7 +31,8 @@ public class ProjectManager
     {
         if ( !isTitleUnique( title ) ) throw new TitleNotUniqueException( " Title not Unique" );
 
-        Project project = new Project(new ArrayList<>(  ), title, descr, nextProjectId++ );
+        nextProjectId = getHighestId() + 1;
+        Project project = new Project(new ArrayList<>(  ), title, descr, nextProjectId );
         projects.add( project );
         return project;
     }
@@ -50,7 +51,7 @@ public class ProjectManager
 
     public List<Project> findProjects( String titleStr )
     {
-        return projects.stream().filter( p -> p.getTitle().contains( titleStr )).toList();
+        return projects.stream().filter( p -> p.getTitle().equals( titleStr )).toList();
     }
 
     public int getNextProjectId( )

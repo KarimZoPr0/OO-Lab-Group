@@ -4,7 +4,7 @@ public class TakenByMatcher implements ItaskMatcher
 {
     private final String takenBy;
 
-    public TakenByMatcher(String takenby)
+    public TakenByMatcher(String takenBy)
     {
         this.takenBy = takenBy;
     }
