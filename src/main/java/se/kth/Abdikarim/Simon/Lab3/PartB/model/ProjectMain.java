@@ -42,18 +42,13 @@ public class ProjectMain
         pm.setProjects( projects );
 
         List< Project > getList = null;
-        try
-        {
-            getList = pm.getProjects();
+        getList = pm.getProjects();
 
-            var p1Cloned = getList.get( 0 );
-            p1Cloned.addTask( "New Task", TaskPrio.High );
-            System.out.println( p1 );
+        Project p1Cloned = null;
+        p1Cloned = pm.getProjectById( 0 );
+        p1Cloned.addTask( "New Task", TaskPrio.High );
+        System.out.println( p1 );
 
-        } catch ( CloneNotSupportedException e )
-        {
-            throw new RuntimeException( e );
-        }
 
         try
         {

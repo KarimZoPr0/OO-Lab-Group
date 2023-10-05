@@ -27,7 +27,7 @@ class CurrentProjectUI {
         projectLoop();
     }
 
-    Project getCurrentProject() throws CloneNotSupportedException {
+    Project getCurrentProject() {
          return (Project) currentProject.clone();
     }
 

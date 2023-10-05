@@ -20,6 +20,7 @@ public class ProjectManager
     {
         projects.clear();
         projects.addAll( incomingProjects );
+        nextProjectId = getHighestId();
     }
 
     public boolean isTitleUnique( String title )
@@ -31,8 +32,7 @@ public class ProjectManager
     {
         if ( !isTitleUnique( title ) ) throw new TitleNotUniqueException( " Title not Unique" );
 
-        nextProjectId = getHighestId() + 1;
-        Project project = new Project(new ArrayList<>(  ), title, descr, nextProjectId );
+        Project project = new Project(new ArrayList<>(  ), title, descr, nextProjectId++ );
         projects.add( project );
         return project;
     }
@@ -45,9 +45,8 @@ public class ProjectManager
 
     public Project getProjectById( int id )
     {
-        return projects.get( id );
+        return ( Project ) projects.get( id ).clone();
     }
-
 
     public List<Project> findProjects( String titleStr )
     {
@@ -61,15 +60,23 @@ public class ProjectManager
 
     private int getHighestId( )
     {
-        return projects.stream( ).max( Project::compareTo ).map( Project::getId ).orElse( -1 );
+        int max = -1;
+        for ( Project project : projects )
+        {
+            if(project.getId() > max)
+            {
+                max = project.getId();
+            }
+        }
+        return max;
     }
 
-    public List< Project > getProjects( ) throws CloneNotSupportedException
+    public List< Project > getProjects( )
     {
         ArrayList<Project> copiedProjects = new ArrayList<>(  );
         for ( Project project : projects )
         {
-            Project newProject = (Project ) project.clone();
+            Project newProject = new Project( project.getTasks(), project.getTitle(), project.getDescription(), project.getId() );
             copiedProjects.add(newProject);
         }
         return copiedProjects;
@@ -82,4 +89,3 @@ public class ProjectManager
                 ", nextProjectId: " + nextProjectId;
     }
 }
-

@@ -67,12 +67,12 @@ public class Project implements Comparable<Project>, Serializable, Cloneable
         return tasks.get( nextTaskId ).getLastUpdate();
     }
 
-    public List< Task > getTasks( ) throws CloneNotSupportedException
+    public List<Task> getTasks( )
     {
         var copiedTasks = new ArrayList<Task>(  );
         for ( Task task : tasks )
         {
-            copiedTasks.add( (Task) task.clone() );
+            copiedTasks.add( new Task( task.getDescription( ), task.getPrio( ), task.getTakenBy( ), task.getState( ), task.getId( ) ) );
         }
         return copiedTasks;
     }
@@ -136,17 +136,23 @@ public class Project implements Comparable<Project>, Serializable, Cloneable
     }
 
     @Override
-    public Object clone( ) throws CloneNotSupportedException
+    public Object clone( )
     {
-        Project cloned = (Project ) super.clone( );
-        List<Task> clonedTasks = new ArrayList<>(  );
-
-        for ( Task task : tasks )
+        try
         {
-            clonedTasks.add( (Task) task.clone() );
-        }
+            Project cloned = (Project ) super.clone( );
+            List<Task> clonedTasks = new ArrayList<>(  );
 
-        cloned.tasks = clonedTasks;
-        return cloned;
+            for ( Task task : tasks )
+            {
+                clonedTasks.add( (Task) task.clone() );
+            }
+
+            cloned.tasks = clonedTasks;
+            return cloned;
+        } catch ( CloneNotSupportedException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 }
