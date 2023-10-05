@@ -102,11 +102,12 @@ public class Task implements Comparable<Task>, Serializable, Cloneable
     /**
      * Sets task owner and updates lastUpdate to current date.
      *
-     * @param takenBy the new task owner
+     * @param takenBy the new task owner.
+     * @throws IllegalStateException if task is already taken by.
      */
     public void setTakenBy(String takenBy)
     {
-        if(this.takenBy != null) throw new IllegalStateException("Already Takenby");
+        if(this.takenBy != null) throw new IllegalStateException("Already Takenby: " + this.takenBy);
         this.takenBy = takenBy;
         this.lastUpdate = LocalDate.now();
     }
@@ -184,7 +185,7 @@ public class Task implements Comparable<Task>, Serializable, Cloneable
      * Creates a new arraylist with new references.
      *
      * @return a deep copy of a arrayList
-     * @throws CloneNotSupportedException
+     * @throws CloneNotSupportedException if not found
      */
     @Override
     protected Object clone( ) throws CloneNotSupportedException

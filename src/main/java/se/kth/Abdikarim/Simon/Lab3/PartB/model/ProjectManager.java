@@ -129,7 +129,6 @@ public class ProjectManager
      * Copy the task using clone method for deep copy
      *
      * @return a deep copy of a list
-     * @throws CloneNotSupportedException if not found
      */
     public List< Project > getProjects( )
     {
