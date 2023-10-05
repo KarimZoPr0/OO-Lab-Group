@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 
 class CurrentProjectUI {
-    private Project currentProject;
+    private Project currentProject = null;
     private final Scanner scan;
 
     // package private visibility - only visible to other classes in
@@ -28,7 +28,7 @@ class CurrentProjectUI {
     }
 
     Project getCurrentProject() {
-         return (Project) currentProject.clone();
+         return currentProject;
     }
 
     void projectLoop() {
