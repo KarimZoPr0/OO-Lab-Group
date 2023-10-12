@@ -6,7 +6,6 @@ public class ImageProcessingController implements IImageProcessingEvents
 {
     private ImageProcessingModel model;
     private ImageProcessingView view;
-
     public ImageProcessingController( ImageProcessingModel model, ImageProcessingView view)
     {
         this.model = model;
@@ -18,9 +17,7 @@ public class ImageProcessingController implements IImageProcessingEvents
     @Override
     public void openImageEvent( )
     {
-        String path = view.openImage();
-        System.out.println( path );
-        view.loadImage(path);
+        view.loadImage();
     }
 
     @Override

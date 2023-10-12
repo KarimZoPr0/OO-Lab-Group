@@ -29,10 +29,10 @@ public class Main extends Application
         root.setTop( menuBar );
         root.setCenter( view );
 
-        Scene scene = new Scene(root, 950, 550);
+        Scene scene = new Scene(root, 1000, 550);
         primaryStage.setScene( scene );
         primaryStage.setTitle( "ImageProcessing" );
-        primaryStage.setResizable( false );
+        primaryStage.setResizable( true );
         primaryStage.show();
     }
 }

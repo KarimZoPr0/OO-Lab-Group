@@ -1,15 +1,17 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
+
 import javafx.geometry.Pos;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.PixelReader;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se.kth.Abdikarim.Simon.Lab4.FileIO;
@@ -19,27 +21,40 @@ import java.net.MalformedURLException;
 
 public class ImageProcessingView extends HBox
 {
+    ImageView firstView;
+    private boolean hasSwitchedGenerateMethod = true;
     private IImageProcessingEvents iImageProcessingEvents = null;
-
     private MenuBar menuBar;
-
     private FileChooser fileChooser;
-
     private Stage stage;
-
     private FileIO fileIO;
 
     public ImageProcessingView()
     {
-        createMenuBar();
+        createMenuBar( );
     }
 
-    public void setIImageProcessingEvents(IImageProcessingEvents imageProcessingEvents)
+    public void setIImageProcessingEvents( IImageProcessingEvents imageProcessingEvents )
     {
-        fileIO = new FileIO();
-        fileChooser = new FileChooser();
+        firstView = new ImageView( );
+        fileIO = new FileIO( );
+        fileChooser = new FileChooser( );
         fileChooser.setTitle( "Open Image" );
         this.iImageProcessingEvents = imageProcessingEvents;
+        final CategoryAxis xAxis = new CategoryAxis( );
+        final NumberAxis yAxis = new NumberAxis( );
+        chartHistogram = new LineChart<>( xAxis, yAxis );
+        chartHistogram.setCreateSymbols( false );
+        seriesAlpha = new XYChart.Series( );
+        seriesRed = new XYChart.Series( );
+        seriesGreen = new XYChart.Series( );
+        seriesBlue = new XYChart.Series( );
+        seriesAlpha.setName( "alpha" );
+        seriesRed.setName( "red" );
+        seriesGreen.setName( "green" );
+        seriesBlue.setName( "blue" );
+        chartHistogram.getData( ).addAll( seriesRed, seriesGreen, seriesBlue );
+
     }
 
     private void createMenuBar( )
@@ -47,16 +62,16 @@ public class ImageProcessingView extends HBox
         // Menu
         Menu fileMenu = new Menu( "File" );
         MenuItem openImageItem = new MenuItem( "Open Image" );
-        openImageItem.setOnAction( e -> iImageProcessingEvents.openImageEvent());
+        openImageItem.setOnAction( e -> iImageProcessingEvents.openImageEvent( ) );
         MenuItem saveItem = new MenuItem( "Save" );
-        saveItem.setOnAction( event -> iImageProcessingEvents.saveImageEvent());
+        saveItem.setOnAction( event -> iImageProcessingEvents.saveImageEvent( ) );
         MenuItem exitItem = new MenuItem( "Exit" );
-        exitItem.setOnAction( event -> iImageProcessingEvents.closeAppEvent());
-        fileMenu.getItems().addAll( openImageItem, saveItem, exitItem );
+        exitItem.setOnAction( event -> iImageProcessingEvents.closeAppEvent( ) );
+        fileMenu.getItems( ).addAll( openImageItem, saveItem, exitItem );
 
         Menu generateMenu = new Menu( "Generate" );
-        MenuItem histogramItem = new MenuItem("Histogram");
-        histogramItem.setOnAction( event -> System.out.println( "Histogram" ) );
+        MenuItem histogramItem = new MenuItem( "Histogram" );
+        histogramItem.setOnAction( event -> iImageProcessingEvents.generateHistogramEvent( ) );
         MenuItem contrastItem = new MenuItem( "Contrast" );
         contrastItem.setOnAction( event -> System.out.println( "Contrast" ) );
         MenuItem blurItem = new MenuItem( "Blur" );
@@ -64,46 +79,26 @@ public class ImageProcessingView extends HBox
         MenuItem invertItem = new MenuItem( "Invert Color" );
         invertItem.setOnAction( event -> System.out.println( "Invert color" ) );
 
-        generateMenu.getItems().addAll( histogramItem, contrastItem, blurItem, invertItem );
+        generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, invertItem );
 
-        menuBar = new MenuBar(  );
-        menuBar.getMenus().addAll( fileMenu, generateMenu );
+        menuBar = new MenuBar( );
+        menuBar.getMenus( ).addAll( fileMenu, generateMenu );
     }
 
-    public void setStage(Stage stage)
+    public void setStage( Stage stage )
     {
         this.stage = stage;
     }
 
-
-    public String openImage()
+    public void loadImage( )
     {
-        return fileIO.openFile( stage );
-    }
+        fileIO.loadImage( );
 
+        firstView.setImage( fileIO.getImage( ) );
 
-    public void loadImage(String path)
-    {
-        File file = new File( path );
-        Image image = null;
-        try
-        {
-            image = new Image( file.toURL().toString() );
-        } catch ( MalformedURLException e )
-        {
-            throw new RuntimeException( e );
-        }
+        iImageProcessingEvents.generateHistogramEvent( );
 
-        // Display the image as is.
-        ImageView firstView = new ImageView();
-        firstView.setImage(image);
-
-
-        // Display the image as is.
-        ImageView secondView = new ImageView();
-        secondView.setImage(image);
-
-        this.getChildren().addAll( firstView, secondView );
+        this.getChildren( ).addAll( chartHistogram, firstView );
         this.setAlignment( Pos.CENTER );
     }
 
@@ -111,4 +106,31 @@ public class ImageProcessingView extends HBox
     {
         return menuBar;
     }
+
+    public boolean pixelReaderExists( )
+    {
+        pixelReader = fileIO.getImage( ).getPixelReader( );
+        return pixelReader != null;
+    }
+
+    public int getArgb( int x, int y )
+    {
+        return pixelReader.getArgb( x, y );
+    }
+
+    public double getImageWidth( )
+    {
+        return fileIO.getImage( ).getWidth( );
+    }
+
+    public double getImageHeight( )
+    {
+        return fileIO.getImage( ).getHeight( );
+    }
+
+    public FileIO getFileIO( )
+    {
+        return fileIO;
+    }
+
 }
