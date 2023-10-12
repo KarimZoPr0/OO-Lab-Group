@@ -1,5 +1,9 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
+import com.sun.marlin.stats.Histogram;
+import javafx.scene.paint.Color;
+import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ImageHistogram;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingController implements IImageProcessingEvents
@@ -31,4 +35,14 @@ public class ImageProcessingController implements IImageProcessingEvents
     {
         System.out.println( "Exit" );
     }
+
+    @Override
+    public void generateHistogramEvent( )
+    {
+        if(!view.pixelReaderExists()) return;
+        ImageHistogram histogram = model.getImageHistogram( );
+        int[][] pixelMatrix = histogram.calculateHistogram( ImagePixelMatrixConverter.getPixelMatrix( view.getFileIO( ).getImage( ) ));
+        view.updateChartHistogram(pixelMatrix);
+    }
 }
+

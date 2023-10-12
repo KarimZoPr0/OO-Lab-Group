@@ -28,8 +28,17 @@ public class ImageProcessingView extends HBox
     private FileChooser fileChooser;
     private Stage stage;
     private FileIO fileIO;
+    private XYChart.Series seriesAlpha;
+    private XYChart.Series seriesRed;
+    private XYChart.Series seriesGreen;
+    private XYChart.Series seriesBlue;
 
-    public ImageProcessingView()
+    private PixelReader pixelReader;
+
+    private LineChart<String, Number> chartHistogram;
+
+
+    public ImageProcessingView( )
     {
         createMenuBar( );
     }
@@ -100,6 +109,22 @@ public class ImageProcessingView extends HBox
 
         this.getChildren( ).addAll( chartHistogram, firstView );
         this.setAlignment( Pos.CENTER );
+    }
+
+    public void updateChartHistogram( int[][] pixelMatrix )
+    {
+        chartHistogram.getData( ).clear( );
+
+        for ( int i = 0; i < 256; i++ )
+        {
+            seriesAlpha.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 0 ][ i ] ) );
+            seriesRed.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 1 ][ i ] ) );
+            seriesGreen.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 2 ][ i ] ) );
+            seriesBlue.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 3 ][ i ] ) );
+        }
+
+        chartHistogram.getData( ).addAll( seriesRed, seriesGreen, seriesBlue );
+        hasSwitchedGenerateMethod = false;
     }
 
     public MenuBar getMenuBar( )

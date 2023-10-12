@@ -5,4 +5,5 @@ public interface IImageProcessingEvents
     void openImageEvent();
     void saveImageEvent();
     void closeAppEvent();
+    void generateHistogramEvent();
 }
