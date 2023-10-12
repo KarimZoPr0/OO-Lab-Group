@@ -22,7 +22,6 @@ import java.net.MalformedURLException;
 public class ImageProcessingView extends HBox
 {
     ImageView firstView;
-    private boolean hasSwitchedGenerateMethod = true;
     private IImageProcessingEvents iImageProcessingEvents = null;
     private MenuBar menuBar;
     private FileChooser fileChooser;
@@ -54,16 +53,6 @@ public class ImageProcessingView extends HBox
         final NumberAxis yAxis = new NumberAxis( );
         chartHistogram = new LineChart<>( xAxis, yAxis );
         chartHistogram.setCreateSymbols( false );
-        seriesAlpha = new XYChart.Series( );
-        seriesRed = new XYChart.Series( );
-        seriesGreen = new XYChart.Series( );
-        seriesBlue = new XYChart.Series( );
-        seriesAlpha.setName( "alpha" );
-        seriesRed.setName( "red" );
-        seriesGreen.setName( "green" );
-        seriesBlue.setName( "blue" );
-        chartHistogram.getData( ).addAll( seriesRed, seriesGreen, seriesBlue );
-
     }
 
     private void createMenuBar( )
@@ -113,6 +102,15 @@ public class ImageProcessingView extends HBox
 
     public void updateChartHistogram( int[][] pixelMatrix )
     {
+        seriesAlpha = new XYChart.Series( );
+        seriesRed = new XYChart.Series( );
+        seriesGreen = new XYChart.Series( );
+        seriesBlue = new XYChart.Series( );
+        seriesAlpha.setName( "alpha" );
+        seriesRed.setName( "red" );
+        seriesGreen.setName( "green" );
+        seriesBlue.setName( "blue" );
+
         chartHistogram.getData( ).clear( );
 
         for ( int i = 0; i < 256; i++ )
@@ -124,7 +122,6 @@ public class ImageProcessingView extends HBox
         }
 
         chartHistogram.getData( ).addAll( seriesRed, seriesGreen, seriesBlue );
-        hasSwitchedGenerateMethod = false;
     }
 
     public MenuBar getMenuBar( )
