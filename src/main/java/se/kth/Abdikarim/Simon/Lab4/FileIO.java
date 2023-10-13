@@ -43,4 +43,9 @@ public class FileIO
     {
         return image;
     }
+
+    public void setImage(Image image)
+    {
+        this.image = image;
+    }
 }

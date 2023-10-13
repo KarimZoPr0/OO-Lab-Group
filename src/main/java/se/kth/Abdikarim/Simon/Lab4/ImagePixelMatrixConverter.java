@@ -27,27 +27,22 @@ public class ImagePixelMatrixConverter
 
     public static Image getImage( int[][] pixelMatrix )
     {
-        // create an object of type WritableImage (a subclass to Image)
-        WritableImage writableImage = new WritableImage( pixelMatrix.length, pixelMatrix[0].length );
-        // get a PixelWriter from the WritableImage and ...
-        PixelWriter pixelWriter = writableImage.getPixelWriter();
-        // ... use the PixelWriter to write pixels from int[][] to the image object
-        for ( int x = 0; x < writableImage.getWidth(); x++ )
+        // Create a writable image
+        WritableImage writableImage = new WritableImage( pixelMatrix.length, pixelMatrix[ 0 ].length );
+        // Get a PixelWriter from the WritableImage
+        PixelWriter pixelWriter = writableImage.getPixelWriter( );
+
+        for ( int x = 0; x < writableImage.getWidth( ); x++ )
         {
-            for ( int y = 0; y < writableImage.getHeight(); y++ )
+            for ( int y = 0; y < writableImage.getHeight( ); y++ )
             {
-                // store alpha, red, green, blue, each one byte, in an int (four bytes in Java)
-                int pixel = pixelMatrix[x][y];
-                int rValue = ((pixel >> 16) & 0xff);
-                int gValue = ((pixel >> 8) & 0xff);
-                int bValue = ((pixel) & 0xff);
-                pixelWriter.setArgb( rValue, gValue, bValue );
+                // Store alpha, red, green, blue, each one byte, in an int (four bytes in Java)
+                int pixel = pixelMatrix[ x ][ y ];
+                pixelWriter.setArgb( x, y, pixel );
             }
         }
 
-
-        // return the (Writable) Image object
+        // Return the writable image
         return writableImage;
-
     }
 }

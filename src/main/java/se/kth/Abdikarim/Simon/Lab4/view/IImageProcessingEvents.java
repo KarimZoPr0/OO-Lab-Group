@@ -6,4 +6,5 @@ public interface IImageProcessingEvents
     void saveImageEvent();
     void closeAppEvent();
     void generateHistogramEvent();
+    void generateContrastEvent();
 }

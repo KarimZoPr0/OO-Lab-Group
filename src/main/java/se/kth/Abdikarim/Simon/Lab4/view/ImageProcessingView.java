@@ -1,27 +1,25 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se.kth.Abdikarim.Simon.Lab4.FileIO;
+import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
 
-import java.io.File;
-import java.net.MalformedURLException;
-
-public class ImageProcessingView extends HBox
+public class ImageProcessingView extends BorderPane
 {
-    ImageView firstView;
+    private ImageView firstView;
     private IImageProcessingEvents iImageProcessingEvents = null;
     private MenuBar menuBar;
     private FileChooser fileChooser;
@@ -35,6 +33,12 @@ public class ImageProcessingView extends HBox
     private PixelReader pixelReader;
 
     private LineChart<String, Number> chartHistogram;
+
+    private Slider windowSlider;
+    private Slider levelSlider;
+
+    private Label windowLabel;
+    private Label levelLabel;
 
 
     public ImageProcessingView( )
@@ -53,6 +57,8 @@ public class ImageProcessingView extends HBox
         final NumberAxis yAxis = new NumberAxis( );
         chartHistogram = new LineChart<>( xAxis, yAxis );
         chartHistogram.setCreateSymbols( false );
+        windowSlider = new Slider(  );
+        levelSlider = new Slider(  );
     }
 
     private void createMenuBar( )
@@ -71,7 +77,7 @@ public class ImageProcessingView extends HBox
         MenuItem histogramItem = new MenuItem( "Histogram" );
         histogramItem.setOnAction( event -> iImageProcessingEvents.generateHistogramEvent( ) );
         MenuItem contrastItem = new MenuItem( "Contrast" );
-        contrastItem.setOnAction( event -> System.out.println( "Contrast" ) );
+        contrastItem.setOnAction( event -> iImageProcessingEvents.generateContrastEvent() );
         MenuItem blurItem = new MenuItem( "Blur" );
         blurItem.setOnAction( event -> System.out.println( "Blur" ) );
         MenuItem invertItem = new MenuItem( "Invert Color" );
@@ -96,8 +102,45 @@ public class ImageProcessingView extends HBox
 
         iImageProcessingEvents.generateHistogramEvent( );
 
-        this.getChildren( ).addAll( chartHistogram, firstView );
-        this.setAlignment( Pos.CENTER );
+        windowSlider.setMin(0);
+        windowSlider.setMax(255);
+        windowSlider.setValue(100);
+        windowSlider.setMajorTickUnit( 64 );
+        windowSlider.setShowTickLabels( true );
+
+        levelSlider.setMin(0);
+        levelSlider.setMax(255);
+        levelSlider.setValue(100);
+        levelSlider.setMajorTickUnit( 64 );
+        levelSlider.setShowTickLabels( true );
+
+        Label windowLabel = new Label( "Window" );
+        Label levelLabel = new Label( "Level" );
+
+        Label windowValueLabel = new Label( "Window: " );
+        Label levelValueLabel = new Label( "Level: : " );
+
+
+       windowSlider.valueProperty().addListener( ( observableValue, number, t1 ) -> windowValueLabel.setText( "Window: " + t1.intValue() ) );
+       levelSlider.valueProperty().addListener( ( observableValue, number, t1 ) -> levelValueLabel.setText( "Level: " + t1.intValue() ) );
+
+        StackPane stackPane = new StackPane( firstView );
+        stackPane.setPadding( new Insets( 10,10,10,10 ) );
+
+        VBox vbox = new VBox( windowLabel, windowSlider, levelLabel, levelSlider );
+        HBox hBoxValue = new HBox( windowValueLabel, levelValueLabel );
+        hBoxValue.setSpacing( 10 );
+        hBoxValue.setPadding( new Insets( 5,5,5,5 ) );
+        vbox.setPadding( new Insets( 15,15,15,15 ) );
+        vbox.setStyle( "-fx-border-radius: 2; -fx-border-color: green;" );
+        StackPane pane = new StackPane( vbox );
+        pane.setPadding( new Insets( 15,15,15,15 ) );
+
+        this.setCenter( pane);
+        this.setRight( stackPane );
+        this.setBottom( hBoxValue );
+
+        // this.getChildren( ).addAll( chartHistogram, firstView );
     }
 
     public void updateChartHistogram( int[][] pixelMatrix )
@@ -155,4 +198,20 @@ public class ImageProcessingView extends HBox
         return fileIO;
     }
 
+    public void setImage(int[][] pixelMatrix )
+    {
+        var image = ImagePixelMatrixConverter.getImage( pixelMatrix );
+        fileIO.setImage( image );
+        firstView.setImage( fileIO.getImage() );
+    }
+
+    public int getLevelSliderValue()
+    {
+        return (int) levelSlider.getValue();
+    }
+
+    public int getWindowSliderValue()
+    {
+        return (int)windowSlider.getValue();
+    }
 }

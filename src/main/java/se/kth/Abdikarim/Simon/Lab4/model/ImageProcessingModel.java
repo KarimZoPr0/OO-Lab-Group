@@ -1,21 +1,28 @@
 package se.kth.Abdikarim.Simon.Lab4.model;
 
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Contrast;
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ImageHistogram;
 
 public class ImageProcessingModel
 {
-    private ImageHistogram imageHistogram;
+    private ImageHistogram histogram;
+    private Contrast contrast;
 
 
     public ImageProcessingModel( )
     {
-        imageHistogram = new ImageHistogram();
+        histogram = new ImageHistogram();
+        contrast = new Contrast();
     }
 
 
-    public ImageHistogram getImageHistogram( )
+    public ImageHistogram getHistogram( )
     {
-        imageHistogram = new ImageHistogram();
-        return imageHistogram;
+        return histogram;
+    }
+
+    public Contrast getContrast( )
+    {
+        return contrast;
     }
 }
