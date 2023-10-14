@@ -17,8 +17,7 @@ public class Main extends Application
     public void start( Stage primaryStage )
     {
         ImageProcessingModel model = new ImageProcessingModel();
-        ImageProcessingView view = new ImageProcessingView();
-        ImageProcessingController controller = new ImageProcessingController(model, view);
+        ImageProcessingView view = new ImageProcessingView(model);
 
         // Create a menu bar
         MenuBar menuBar = view.getMenuBar();
@@ -29,7 +28,7 @@ public class Main extends Application
         root.setTop( menuBar );
         root.setCenter( view );
 
-        Scene scene = new Scene(root, 1000, 600);
+        Scene scene = new Scene(root, 1000, 585);
         primaryStage.setScene( scene );
         primaryStage.setTitle( "ImageProcessing" );
         primaryStage.setResizable( true );

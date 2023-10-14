@@ -1,56 +1,49 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
+import javafx.application.Platform;
 import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Contrast;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ImageHistogram;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
-public class ImageProcessingController implements IImageProcessingEvents
+public class ImageProcessingController
 {
     private ImageProcessingModel model;
     private ImageProcessingView view;
-    public ImageProcessingController( ImageProcessingModel model, ImageProcessingView view)
+
+    public ImageProcessingController( ImageProcessingModel model, ImageProcessingView view )
     {
         this.model = model;
         this.view = view;
-
-        view.setIImageProcessingEvents( this );
     }
 
-    @Override
-    public void openImageEvent( )
+    public void handleOpenImage( )
     {
-        view.loadImage();
+        view.loadImage( );
+        view.updateGenerateView( model.getProcessorState() );
     }
 
-    @Override
-    public void saveImageEvent( )
+    public void handleSaveImage( )
     {
-        System.out.println("Save" );
+        System.out.println( "Save" );
     }
 
-    @Override
-    public void closeAppEvent( )
+    public void handleExitApp( )
     {
         System.out.println( "Exit" );
     }
 
-    @Override
-    public void generateHistogramEvent( )
+    public void generateImage( )
     {
-        if(!view.pixelReaderExists()) return;
-        ImageHistogram histogram = model.getHistogram( );
-        int[][] pixelMatrix = histogram.calculateHistogram( ImagePixelMatrixConverter.getPixelMatrix( view.getFileIO( ).getImage( ) ));
-        view.updateChartHistogram(pixelMatrix);
+        var originalImg = ImagePixelMatrixConverter.getPixelMatrix( view.getFileIO( ).getImage( ) );
+        int[][] pixelMatrix = model.processImage( originalImg );
+        view.updateGenerateView( model.getProcessorState());
+        view.setImage( pixelMatrix );
     }
 
-    @Override
-    public void generateContrastEvent( )
+    public void handleHistogram( )
     {
-        model.getContrast().setLevel( view.getLevelSliderValue() );
-        model.getContrast().setWindow( view.getWindowSliderValue() );
-        int[][] pixelMatrix = model.getContrast().processImage(  ImagePixelMatrixConverter.getPixelMatrix( view.getFileIO( ).getImage( ) ));
-        view.setImage(pixelMatrix);
+        if ( !view.pixelReaderExists( ) ) return;
+        int[][] pixelMatrix = model.generateHistogram( ImagePixelMatrixConverter.getPixelMatrix( view.getFileIO( ).getImage( )));
+        view.updateChartHistogram( pixelMatrix );
     }
 }
 

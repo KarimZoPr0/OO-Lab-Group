@@ -6,7 +6,7 @@ public class Contrast implements IProcessor
     private int level = 135;
     private int window = 197;
 
-    public Contrast( )
+    public Contrast(  )
     {
 
     }
@@ -76,6 +76,15 @@ public class Contrast implements IProcessor
     {
         this.level = level;
         System.out.println( level );
+    }
 
+    public int getLevel( )
+    {
+        return level;
+    }
+
+    public int getWindow( )
+    {
+        return window;
     }
 }

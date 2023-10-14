@@ -1,9 +1,7 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -11,77 +9,128 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
-import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import se.kth.Abdikarim.Simon.Lab4.FileIO;
 import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Blur;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Contrast;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.EdgeDetection;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ProcessorState;
+import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingView extends BorderPane
 {
+    private final PauseTransition windowDebounce = new PauseTransition( Duration.millis( 300 ) );
+    private final PauseTransition levelDebounce = new PauseTransition( Duration.millis( 300 ) );
     private ImageView firstView;
-    private IImageProcessingEvents iImageProcessingEvents = null;
     private MenuBar menuBar;
-    private FileChooser fileChooser;
     private Stage stage;
     private FileIO fileIO;
-    private XYChart.Series seriesAlpha;
-    private XYChart.Series seriesRed;
-    private XYChart.Series seriesGreen;
-    private XYChart.Series seriesBlue;
-
     private PixelReader pixelReader;
-
     private LineChart<String, Number> chartHistogram;
-
     private Slider windowSlider;
     private Slider levelSlider;
-
+    private ImageProcessingModel model;
+    private Button updateBtn;
     private Label windowLabel;
     private Label levelLabel;
 
+    private Label histogramLbl;
 
-    public ImageProcessingView( )
-    {
-        createMenuBar( );
-    }
 
-    public void setIImageProcessingEvents( IImageProcessingEvents imageProcessingEvents )
+    public ImageProcessingView( ImageProcessingModel model )
     {
+        histogramLbl = new Label( );
+        windowLabel = new Label( "Window: " );
+        levelLabel = new Label( "Level: : " );
+        this.model = model;
         firstView = new ImageView( );
         fileIO = new FileIO( );
-        fileChooser = new FileChooser( );
-        fileChooser.setTitle( "Open Image" );
-        this.iImageProcessingEvents = imageProcessingEvents;
+        updateBtn = new Button( "Update" );
         final CategoryAxis xAxis = new CategoryAxis( );
         final NumberAxis yAxis = new NumberAxis( );
         chartHistogram = new LineChart<>( xAxis, yAxis );
         chartHistogram.setCreateSymbols( false );
-        windowSlider = new Slider(  );
-        levelSlider = new Slider(  );
+        windowSlider = new Slider( );
+        levelSlider = new Slider( );
+        ImageProcessingController controller = new ImageProcessingController( model, this );
+        createMenuBar( controller );
+
+        windowSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
+        {
+            windowDebounce.setOnFinished( e ->
+            {
+                ( ( Contrast ) model.getProcessor( ) ).setWindow( newValue.intValue( ) );
+                windowLabel.setText( "Window: " + getWindowSliderValue( ) );
+                controller.generateImage( );
+            } );
+            windowDebounce.playFromStart( );
+        } );
+
+        levelSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
+        {
+            levelDebounce.setOnFinished( e ->
+            {
+                ( ( Contrast ) model.getProcessor( ) ).setLevel( newValue.intValue( ) );
+                levelLabel.setText( "Level: " + getLevelSliderValue( ) );
+                controller.generateImage( );
+            } );
+            levelDebounce.playFromStart( );
+        } );
     }
 
-    private void createMenuBar( )
+    private void createMenuBar( ImageProcessingController controller )
     {
+        updateBtn.setOnAction( e ->
+        {
+            histogramLbl.setText( "Histogram generated" );
+            controller.handleHistogram( );
+        } );
+
         // Menu
         Menu fileMenu = new Menu( "File" );
         MenuItem openImageItem = new MenuItem( "Open Image" );
-        openImageItem.setOnAction( e -> iImageProcessingEvents.openImageEvent( ) );
+        openImageItem.setOnAction( e -> controller.handleOpenImage( ) );
         MenuItem saveItem = new MenuItem( "Save" );
-        saveItem.setOnAction( event -> iImageProcessingEvents.saveImageEvent( ) );
+        saveItem.setOnAction( event -> controller.handleSaveImage( ) );
         MenuItem exitItem = new MenuItem( "Exit" );
-        exitItem.setOnAction( event -> iImageProcessingEvents.closeAppEvent( ) );
+        exitItem.setOnAction( event -> controller.handleExitApp( ) );
         fileMenu.getItems( ).addAll( openImageItem, saveItem, exitItem );
 
         Menu generateMenu = new Menu( "Generate" );
         MenuItem histogramItem = new MenuItem( "Histogram" );
-        histogramItem.setOnAction( event -> iImageProcessingEvents.generateHistogramEvent( ) );
+        histogramItem.setOnAction( event ->
+        {
+            model.setProcessorState( ProcessorState.HISTOGRAM );
+            updateGenerateView( model.getProcessorState( ) );
+        } );
+
         MenuItem contrastItem = new MenuItem( "Contrast" );
-        contrastItem.setOnAction( event -> iImageProcessingEvents.generateContrastEvent() );
+        contrastItem.setOnAction( event ->
+        {
+            model.setProcessorState( ProcessorState.CONTRAST );
+            model.setProcessor( new Contrast( ) );
+            updateGenerateView( model.getProcessorState( ) );
+        } );
+
         MenuItem blurItem = new MenuItem( "Blur" );
-        blurItem.setOnAction( event -> System.out.println( "Blur" ) );
-        MenuItem invertItem = new MenuItem( "Invert Color" );
-        invertItem.setOnAction( event -> System.out.println( "Invert color" ) );
+        blurItem.setOnAction( event ->
+        {
+            model.setProcessorState( ProcessorState.BLUR );
+            model.setProcessor( new Blur( ) );
+            controller.generateImage( );
+        } );
+
+        MenuItem invertItem = new MenuItem( "Edge Detection" );
+        invertItem.setOnAction( event -> {
+            model.setProcessorState( ProcessorState.EDGE_DETECTION );
+            model.setProcessor( new EdgeDetection( ) );
+            controller.generateImage( );
+        } );
 
         generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, invertItem );
 
@@ -97,59 +146,15 @@ public class ImageProcessingView extends BorderPane
     public void loadImage( )
     {
         fileIO.loadImage( );
-
         firstView.setImage( fileIO.getImage( ) );
-
-        iImageProcessingEvents.generateHistogramEvent( );
-
-        windowSlider.setMin(0);
-        windowSlider.setMax(255);
-        windowSlider.setValue(100);
-        windowSlider.setMajorTickUnit( 64 );
-        windowSlider.setShowTickLabels( true );
-
-        levelSlider.setMin(0);
-        levelSlider.setMax(255);
-        levelSlider.setValue(100);
-        levelSlider.setMajorTickUnit( 64 );
-        levelSlider.setShowTickLabels( true );
-
-        Label windowLabel = new Label( "Window" );
-        Label levelLabel = new Label( "Level" );
-
-        Label windowValueLabel = new Label( "Window: " );
-        Label levelValueLabel = new Label( "Level: : " );
-
-
-       windowSlider.valueProperty().addListener( ( observableValue, number, t1 ) -> windowValueLabel.setText( "Window: " + t1.intValue() ) );
-       levelSlider.valueProperty().addListener( ( observableValue, number, t1 ) -> levelValueLabel.setText( "Level: " + t1.intValue() ) );
-
-        StackPane stackPane = new StackPane( firstView );
-        stackPane.setPadding( new Insets( 10,10,10,10 ) );
-
-        VBox vbox = new VBox( windowLabel, windowSlider, levelLabel, levelSlider );
-        HBox hBoxValue = new HBox( windowValueLabel, levelValueLabel );
-        hBoxValue.setSpacing( 10 );
-        hBoxValue.setPadding( new Insets( 5,5,5,5 ) );
-        vbox.setPadding( new Insets( 15,15,15,15 ) );
-        vbox.setStyle( "-fx-border-radius: 2; -fx-border-color: green;" );
-        StackPane pane = new StackPane( vbox );
-        pane.setPadding( new Insets( 15,15,15,15 ) );
-
-        this.setCenter( pane);
-        this.setRight( stackPane );
-        this.setBottom( hBoxValue );
-
-        // this.getChildren( ).addAll( chartHistogram, firstView );
     }
 
     public void updateChartHistogram( int[][] pixelMatrix )
     {
-        seriesAlpha = new XYChart.Series( );
-        seriesRed = new XYChart.Series( );
-        seriesGreen = new XYChart.Series( );
-        seriesBlue = new XYChart.Series( );
-        seriesAlpha.setName( "alpha" );
+        XYChart.Series seriesRed = new XYChart.Series( );
+        XYChart.Series seriesGreen = new XYChart.Series( );
+        XYChart.Series seriesBlue = new XYChart.Series( );
+
         seriesRed.setName( "red" );
         seriesGreen.setName( "green" );
         seriesBlue.setName( "blue" );
@@ -158,10 +163,9 @@ public class ImageProcessingView extends BorderPane
 
         for ( int i = 0; i < 256; i++ )
         {
-            seriesAlpha.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 0 ][ i ] ) );
-            seriesRed.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 1 ][ i ] ) );
-            seriesGreen.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 2 ][ i ] ) );
-            seriesBlue.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 3 ][ i ] ) );
+            seriesRed.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 0 ][ i ] ) );
+            seriesGreen.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 1 ][ i ] ) );
+            seriesBlue.getData( ).add( new XYChart.Data( String.valueOf( i ), pixelMatrix[ 2 ][ i ] ) );
         }
 
         chartHistogram.getData( ).addAll( seriesRed, seriesGreen, seriesBlue );
@@ -198,20 +202,59 @@ public class ImageProcessingView extends BorderPane
         return fileIO;
     }
 
-    public void setImage(int[][] pixelMatrix )
+    public void setImage( int[][] pixelMatrix )
     {
         var image = ImagePixelMatrixConverter.getImage( pixelMatrix );
-        fileIO.setImage( image );
-        firstView.setImage( fileIO.getImage() );
+        firstView.setImage( image );
     }
 
-    public int getLevelSliderValue()
+    public int getLevelSliderValue( )
     {
-        return (int) levelSlider.getValue();
+        return ( int ) levelSlider.getValue( );
     }
 
-    public int getWindowSliderValue()
+    public int getWindowSliderValue( )
     {
-        return (int)windowSlider.getValue();
+        return ( int ) windowSlider.getValue( );
+    }
+
+    public void updateGenerateView( ProcessorState state )
+    {
+        model.setProcessorState( state );
+        this.getChildren( ).clear( );
+
+        VBox vBox = new VBox( );
+        vBox.setPadding( new Insets( 15, 15, 15, 15 ) );
+        vBox.setStyle( "-fx-border-radius: 2; -fx-border-color: green;" );
+
+        switch ( model.getProcessorState( ) )
+        {
+            case HISTOGRAM ->
+            {
+                vBox.getChildren( ).addAll( chartHistogram, updateBtn );
+                vBox.setSpacing( 10 );
+                vBox.setPadding( new Insets( 15, 15, 15, 15 ) );
+                this.setBottom( histogramLbl );
+            }
+            case CONTRAST ->
+            {
+                windowSlider.setMin( 0 );
+                windowSlider.setMax( 255 );
+                windowSlider.setMajorTickUnit( 64 );
+                windowSlider.setShowTickLabels( true );
+                levelSlider.setMin( 0 );
+                levelSlider.setMax( 255 );
+                levelSlider.setMajorTickUnit( 64 );
+                levelSlider.setShowTickLabels( true );
+                vBox.getChildren( ).addAll( windowLabel, windowSlider, levelLabel, levelSlider );
+                HBox hBoxValue = new HBox( windowLabel, levelLabel );
+                hBoxValue.setSpacing( 5 );
+                this.setBottom( hBoxValue );
+            }
+        }
+        this.setCenter( vBox );
+        this.setRight( firstView );
+        this.setPadding( new Insets( 10, 10, 10, 10 ) );
+        BorderPane.setMargin( vBox, new Insets( 5, 10, 5, 5 ) );
     }
 }
