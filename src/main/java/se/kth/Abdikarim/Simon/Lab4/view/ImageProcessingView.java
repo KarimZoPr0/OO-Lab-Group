@@ -16,10 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.kth.Abdikarim.Simon.Lab4.FileIO;
 import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Blur;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Contrast;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.EdgeDetection;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ProcessorState;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingView extends BorderPane
@@ -96,7 +93,7 @@ public class ImageProcessingView extends BorderPane
         MenuItem openImageItem = new MenuItem( "Open Image" );
         openImageItem.setOnAction( e -> controller.handleOpenImage( ) );
         MenuItem saveItem = new MenuItem( "Save" );
-        saveItem.setOnAction( event -> controller.handleSaveImage( ) );
+        saveItem.setOnAction( event -> controller.handleSaveImage());
         MenuItem exitItem = new MenuItem( "Exit" );
         exitItem.setOnAction( event -> controller.handleExitApp( ) );
         fileMenu.getItems( ).addAll( openImageItem, saveItem, exitItem );
@@ -125,14 +122,21 @@ public class ImageProcessingView extends BorderPane
             controller.generateImage( );
         } );
 
-        MenuItem invertItem = new MenuItem( "Edge Detection" );
-        invertItem.setOnAction( event -> {
+        MenuItem edgeDetectionItem = new MenuItem( "Edge Detection" );
+        edgeDetectionItem.setOnAction( event -> {
             model.setProcessorState( ProcessorState.EDGE_DETECTION );
             model.setProcessor( new EdgeDetection( ) );
             controller.generateImage( );
         } );
 
-        generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, invertItem );
+        MenuItem invertedColorsItem = new MenuItem( "Inverted Colors" );
+        invertedColorsItem.setOnAction( event -> {
+            model.setProcessorState( ProcessorState.INVERTED_COLORS );
+            model.setProcessor( new InvertColors() );
+            controller.generateImage();
+        });
+
+        generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, edgeDetectionItem, invertedColorsItem );
 
         menuBar = new MenuBar( );
         menuBar.getMenus( ).addAll( fileMenu, generateMenu );
