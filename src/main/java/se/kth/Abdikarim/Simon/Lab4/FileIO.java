@@ -14,9 +14,7 @@ import java.net.MalformedURLException;
 public class FileIO
 {
     private FileChooser fileChooser;
-
-    private Image image;
-
+    private Image image = null;
     private Stage primaryStage;
 
     public FileIO()
@@ -29,6 +27,7 @@ public class FileIO
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter( "Image files", "*.png", ".jpg", "*.bmp");
         fileChooser.getExtensionFilters().add(filter);
         File file = fileChooser.showOpenDialog( primaryStage );
+        if(file == null) return;
         image = null;
         try
         {
@@ -56,8 +55,6 @@ public class FileIO
         }
     }
 
-
-
     public void setPrimaryStage( Stage primaryStage )
     {
         this.primaryStage = primaryStage;
@@ -72,4 +69,5 @@ public class FileIO
     {
         this.image = image;
     }
+
 }

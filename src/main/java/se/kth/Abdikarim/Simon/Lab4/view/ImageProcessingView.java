@@ -7,6 +7,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.layout.BorderPane;
@@ -35,12 +36,13 @@ public class ImageProcessingView extends BorderPane
     private Button updateBtn;
     private Label windowLabel;
     private Label levelLabel;
-
     private Label histogramLbl;
 
+    private Alert alert;
 
     public ImageProcessingView( ImageProcessingModel model )
     {
+        alert = new Alert( Alert.AlertType.NONE );
         histogramLbl = new Label( );
         windowLabel = new Label( "Window: " );
         levelLabel = new Label( "Level: : " );
@@ -93,7 +95,7 @@ public class ImageProcessingView extends BorderPane
         MenuItem openImageItem = new MenuItem( "Open Image" );
         openImageItem.setOnAction( e -> controller.handleOpenImage( ) );
         MenuItem saveItem = new MenuItem( "Save" );
-        saveItem.setOnAction( event -> controller.handleSaveImage());
+        saveItem.setOnAction( event -> controller.handleSaveImage( ) );
         MenuItem exitItem = new MenuItem( "Exit" );
         exitItem.setOnAction( event -> controller.handleExitApp( ) );
         fileMenu.getItems( ).addAll( openImageItem, saveItem, exitItem );
@@ -123,18 +125,20 @@ public class ImageProcessingView extends BorderPane
         } );
 
         MenuItem edgeDetectionItem = new MenuItem( "Edge Detection" );
-        edgeDetectionItem.setOnAction( event -> {
+        edgeDetectionItem.setOnAction( event ->
+        {
             model.setProcessorState( ProcessorState.EDGE_DETECTION );
             model.setProcessor( new EdgeDetection( ) );
             controller.generateImage( );
         } );
 
         MenuItem invertedColorsItem = new MenuItem( "Inverted Colors" );
-        invertedColorsItem.setOnAction( event -> {
+        invertedColorsItem.setOnAction( event ->
+        {
             model.setProcessorState( ProcessorState.INVERTED_COLORS );
-            model.setProcessor( new InvertColors() );
-            controller.generateImage();
-        });
+            model.setProcessor( new InvertColors( ) );
+            controller.generateImage( );
+        } );
 
         generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, edgeDetectionItem, invertedColorsItem );
 
@@ -182,8 +186,15 @@ public class ImageProcessingView extends BorderPane
 
     public boolean pixelReaderExists( )
     {
-        pixelReader = fileIO.getImage( ).getPixelReader( );
-        return pixelReader != null;
+        if ( fileIO.getImage( ) != null )
+        {
+            pixelReader = fileIO.getImage( ).getPixelReader( );
+            return true;
+        }
+        alert.setAlertType( Alert.AlertType.WARNING );
+        alert.setContentText( "Please open an image first!" );
+        alert.show( );
+        return false;
     }
 
     public int getArgb( int x, int y )
@@ -201,15 +212,21 @@ public class ImageProcessingView extends BorderPane
         return fileIO.getImage( ).getHeight( );
     }
 
-    public FileIO getFileIO( )
+
+    public Image getOriginalImage()
     {
-        return fileIO;
+        return fileIO.getImage();
     }
 
     public void setImage( int[][] pixelMatrix )
     {
         var image = ImagePixelMatrixConverter.getImage( pixelMatrix );
         firstView.setImage( image );
+    }
+
+    public Image getImageFromView( )
+    {
+        return firstView.getImage( );
     }
 
     public int getLevelSliderValue( )
@@ -224,6 +241,7 @@ public class ImageProcessingView extends BorderPane
 
     public void updateGenerateView( ProcessorState state )
     {
+        if ( !pixelReaderExists( ) ) return;
         model.setProcessorState( state );
         this.getChildren( ).clear( );
 
@@ -261,4 +279,11 @@ public class ImageProcessingView extends BorderPane
         this.setPadding( new Insets( 10, 10, 10, 10 ) );
         BorderPane.setMargin( vBox, new Insets( 5, 10, 5, 5 ) );
     }
+
+    public void saveImage( )
+    {
+        fileIO.saveProcessedImage( firstView.getImage( ) );
+    }
+
+
 }
