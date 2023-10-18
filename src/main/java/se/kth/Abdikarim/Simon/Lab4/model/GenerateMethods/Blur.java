@@ -8,7 +8,7 @@ import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
  */
 public class Blur implements IProcessor
 {
-    private double[][] kernel = {
+    private final double[][] kernel = {
             { 1.0 / 9, 1.0 / 9, 1.0 / 9 },
             { 1.0 / 9, 1.0 / 9, 1.0 / 9 },
             { 1.0 / 9, 1.0 / 9, 1.0 / 9 }

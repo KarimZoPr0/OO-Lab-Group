@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
  */
 public class FileIO
 {
-    private FileChooser fileChooser;
+    private final FileChooser fileChooser;
     private Image image = null;
     private Stage primaryStage;
 

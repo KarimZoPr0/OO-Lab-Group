@@ -13,7 +13,6 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
@@ -29,21 +28,20 @@ public class ImageProcessingView extends BorderPane
 {
     private final PauseTransition windowDebounce;
     private final PauseTransition levelDebounce;
-    private ImageView firstView;
+    private final ImageView firstView;
     private MenuBar menuBar;
-    private Stage stage;
-    private FileIO fileIO;
+    private final FileIO fileIO;
     private PixelReader pixelReader;
-    private LineChart<String, Number> chartHistogram;
-    private Slider windowSlider;
-    private Slider levelSlider;
-    private ImageProcessingModel model;
-    private Button updateBtn;
-    private Label windowLabel;
-    private Label levelLabel;
-    private Label histogramLbl;
+    private final LineChart<String, Number> chartHistogram;
+    private final Slider windowSlider;
+    private final Slider levelSlider;
+    private final ImageProcessingModel model;
+    private final Button updateBtn;
+    private final Label windowLabel;
+    private final Label levelLabel;
+    private final Label histogramLbl;
 
-    private Alert alert;
+    private final Alert alert;
 
     /**
      * Public visibility
@@ -167,11 +165,6 @@ public class ImageProcessingView extends BorderPane
             } );
             levelDebounce.playFromStart( );
         } );
-    }
-
-    public void setStage( Stage stage )
-    {
-        this.stage = stage;
     }
 
     /**

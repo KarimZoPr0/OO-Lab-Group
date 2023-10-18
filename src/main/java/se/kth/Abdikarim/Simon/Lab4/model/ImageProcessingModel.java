@@ -9,7 +9,7 @@ import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
  */
 public class ImageProcessingModel
 {
-    private ImageHistogram histogram;
+    private final ImageHistogram histogram;
     private IProcessor processor;
     private ProcessorState processorState;
 

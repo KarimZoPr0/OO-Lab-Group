@@ -8,8 +8,8 @@ import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
  */
 public class ImageProcessingController
 {
-    private ImageProcessingModel model;
-    private ImageProcessingView view;
+    private final ImageProcessingModel model;
+    private final ImageProcessingView view;
 
     public ImageProcessingController( ImageProcessingModel model, ImageProcessingView view )
     {
