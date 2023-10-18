@@ -60,27 +60,7 @@ public class ImageProcessingView extends BorderPane
         ImageProcessingController controller = new ImageProcessingController( model, this );
         createMenuBar( controller );
 
-        windowSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
-        {
-            windowDebounce.setOnFinished( e ->
-            {
-                ( ( Contrast ) model.getProcessor( ) ).setWindow( newValue.intValue( ) );
-                windowLabel.setText( "Window: " + getWindowSliderValue( ) );
-                controller.generateImage( );
-            } );
-            windowDebounce.playFromStart( );
-        } );
-
-        levelSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
-        {
-            levelDebounce.setOnFinished( e ->
-            {
-                ( ( Contrast ) model.getProcessor( ) ).setLevel( newValue.intValue( ) );
-                levelLabel.setText( "Level: " + getLevelSliderValue( ) );
-                controller.generateImage( );
-            } );
-            levelDebounce.playFromStart( );
-        } );
+        addListenerToSlider( model, controller );
     }
 
     private void createMenuBar( ImageProcessingController controller )
@@ -137,6 +117,31 @@ public class ImageProcessingView extends BorderPane
 
         menuBar = new MenuBar( );
         menuBar.getMenus( ).addAll( fileMenu, generateMenu );
+    }
+
+    private void addListenerToSlider( ImageProcessingModel model, ImageProcessingController controller )
+    {
+        windowSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
+        {
+            windowDebounce.setOnFinished( e ->
+            {
+                ( ( Contrast ) model.getProcessor( ) ).setWindow( newValue.intValue( ) );
+                windowLabel.setText( "Window: " + getWindowSliderValue( ) );
+                controller.generateImage( );
+            } );
+            windowDebounce.playFromStart( );
+        } );
+
+        levelSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
+        {
+            levelDebounce.setOnFinished( e ->
+            {
+                ( ( Contrast ) model.getProcessor( ) ).setLevel( newValue.intValue( ) );
+                levelLabel.setText( "Level: " + getLevelSliderValue( ) );
+                controller.generateImage( );
+            } );
+            levelDebounce.playFromStart( );
+        } );
     }
 
     public void setStage( Stage stage )
@@ -232,11 +237,10 @@ public class ImageProcessingView extends BorderPane
         return ( int ) windowSlider.getValue( );
     }
 
-    public void updateGenerateView( ProcessorState state )
+        public void updateGenerateView( ProcessorState state )
     {
         if ( !pixelReaderExists( ) ) return;
         model.setProcessorState( state );
-        this.getChildren( ).clear( );
 
         VBox vBox = new VBox( );
         vBox.setPadding( new Insets( 15, 15, 15, 15 ) );
@@ -277,6 +281,15 @@ public class ImageProcessingView extends BorderPane
 
     public void saveImage( )
     {
-        fileIO.saveProcessedImage( firstView.getImage( ) );
+        if(firstView.getImage() != null)
+        {
+            fileIO.saveProcessedImage( firstView.getImage( ) );
+        }
+        else
+        {
+            alert.setAlertType( Alert.AlertType.WARNING );
+            alert.setContentText( "Please open an image first!" );
+            alert.show( );
+        }
     }
 }
