@@ -1,5 +1,6 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
+import javafx.application.Platform;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingController
@@ -26,7 +27,7 @@ public class ImageProcessingController
 
     public void handleExitApp( )
     {
-        System.exit( 0 );
+        Platform.exit();
     }
 
     public void generateImage( )
