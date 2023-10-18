@@ -284,12 +284,10 @@ public class ImageProcessingView extends BorderPane
         if(firstView.getImage() != null)
         {
             fileIO.saveProcessedImage( firstView.getImage( ) );
+            return;
         }
-        else
-        {
-            alert.setAlertType( Alert.AlertType.WARNING );
-            alert.setContentText( "Please open an image first!" );
-            alert.show( );
-        }
+        alert.setAlertType( Alert.AlertType.WARNING );
+        alert.setContentText( "Please open an image first!" );
+        alert.show( );
     }
 }
