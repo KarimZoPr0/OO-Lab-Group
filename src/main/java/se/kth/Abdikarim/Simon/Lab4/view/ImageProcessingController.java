@@ -26,7 +26,7 @@ public class ImageProcessingController
 
     public void handleExitApp( )
     {
-        System.out.println( "Exit" );
+        System.exit( 0 );
     }
 
     public void generateImage( )
