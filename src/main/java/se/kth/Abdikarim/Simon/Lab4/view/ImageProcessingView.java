@@ -125,14 +125,6 @@ public class ImageProcessingView extends BorderPane
             controller.generateImage( );
         } );
 
-        MenuItem edgeDetectionItem = new MenuItem( "Edge Detection" );
-        edgeDetectionItem.setOnAction( event ->
-        {
-            model.setProcessorState( ProcessorState.EDGE_DETECTION );
-            model.setProcessor( new EdgeDetection( ) );
-            controller.generateImage( );
-        } );
-
         MenuItem invertedColorsItem = new MenuItem( "Inverted Colors" );
         invertedColorsItem.setOnAction( event ->
         {
@@ -141,7 +133,7 @@ public class ImageProcessingView extends BorderPane
             controller.generateImage( );
         } );
 
-        generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, edgeDetectionItem, invertedColorsItem );
+        generateMenu.getItems( ).addAll( histogramItem, contrastItem, blurItem, invertedColorsItem );
 
         menuBar = new MenuBar( );
         menuBar.getMenus( ).addAll( fileMenu, generateMenu );
