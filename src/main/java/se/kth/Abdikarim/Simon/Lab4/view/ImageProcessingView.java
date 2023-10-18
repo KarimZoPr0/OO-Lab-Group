@@ -15,9 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import se.kth.Abdikarim.Simon.Lab4.FileIO;
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
+import se.kth.Abdikarim.Simon.Lab4.model.ProcessorState;
 
 public class ImageProcessingView extends BorderPane
 {

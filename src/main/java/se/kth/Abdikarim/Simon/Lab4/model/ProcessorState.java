@@ -1,4 +1,4 @@
-package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
+package se.kth.Abdikarim.Simon.Lab4.model;
 
 public enum ProcessorState
 {

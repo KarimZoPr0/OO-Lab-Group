@@ -1,4 +1,4 @@
-package se.kth.Abdikarim.Simon.Lab4;
+package se.kth.Abdikarim.Simon.Lab4.view;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

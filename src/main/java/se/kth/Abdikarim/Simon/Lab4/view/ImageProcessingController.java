@@ -1,6 +1,5 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
-import se.kth.Abdikarim.Simon.Lab4.FileIO;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingController
