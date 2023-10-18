@@ -1,6 +1,6 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
-import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
+import se.kth.Abdikarim.Simon.Lab4.FileIO;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingController
@@ -33,7 +33,7 @@ public class ImageProcessingController
     public void generateImage( )
     {
         if ( !view.pixelReaderExists( ) ) return;
-        var originalImg = ImagePixelMatrixConverter.getPixelMatrix( view.getOriginalImage( ) );
+        var originalImg = FileIO.getPixelMatrix( view.getOriginalImage( ) );
         var pixelMatrix = model.processImage( originalImg );
         view.updateGenerateView( model.getProcessorState( ) );
         view.setImage( pixelMatrix );
@@ -42,7 +42,7 @@ public class ImageProcessingController
     public void handleHistogram( )
     {
         if ( !view.pixelReaderExists( ) ) return;
-        int[][] pixelMatrix = model.generateHistogram( ImagePixelMatrixConverter.getPixelMatrix( view.getOriginalImage( ) ) );
+        int[][] pixelMatrix = model.generateHistogram( FileIO.getPixelMatrix( view.getOriginalImage( ) ) );
         view.updateChartHistogram( pixelMatrix );
     }
 }

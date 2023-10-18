@@ -16,14 +16,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.kth.Abdikarim.Simon.Lab4.FileIO;
-import se.kth.Abdikarim.Simon.Lab4.ImagePixelMatrixConverter;
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
 public class ImageProcessingView extends BorderPane
 {
-    private final PauseTransition windowDebounce = new PauseTransition( Duration.millis( 300 ) );
-    private final PauseTransition levelDebounce = new PauseTransition( Duration.millis( 300 ) );
+    private final PauseTransition windowDebounce;
+    private final PauseTransition levelDebounce;
     private ImageView firstView;
     private MenuBar menuBar;
     private Stage stage;
@@ -42,6 +41,8 @@ public class ImageProcessingView extends BorderPane
 
     public ImageProcessingView( ImageProcessingModel model )
     {
+        windowDebounce = new PauseTransition( Duration.millis( 300 ) );
+        levelDebounce = new PauseTransition( Duration.millis( 300 ) );
         alert = new Alert( Alert.AlertType.NONE );
         histogramLbl = new Label( );
         windowLabel = new Label( "Window: " );
@@ -220,7 +221,7 @@ public class ImageProcessingView extends BorderPane
 
     public void setImage( int[][] pixelMatrix )
     {
-        var image = ImagePixelMatrixConverter.getImage( pixelMatrix );
+        var image = FileIO.getImage( pixelMatrix );
         firstView.setImage( image );
     }
 
@@ -264,10 +265,12 @@ public class ImageProcessingView extends BorderPane
                 windowSlider.setMax( 255 );
                 windowSlider.setMajorTickUnit( 64 );
                 windowSlider.setShowTickLabels( true );
+
                 levelSlider.setMin( 0 );
                 levelSlider.setMax( 255 );
                 levelSlider.setMajorTickUnit( 64 );
                 levelSlider.setShowTickLabels( true );
+
                 vBox.getChildren( ).addAll( windowLabel, windowSlider, levelLabel, levelSlider );
                 HBox hBoxValue = new HBox( windowLabel, levelLabel );
                 hBoxValue.setSpacing( 5 );
@@ -284,6 +287,4 @@ public class ImageProcessingView extends BorderPane
     {
         fileIO.saveProcessedImage( firstView.getImage( ) );
     }
-
-
 }

@@ -1,5 +1,4 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
-
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
 public class Blur implements IProcessor

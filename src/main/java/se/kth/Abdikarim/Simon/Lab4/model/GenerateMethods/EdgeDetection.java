@@ -3,7 +3,6 @@ import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
 public class EdgeDetection implements IProcessor
 {
-
     private int[][] kernelX = {
             { -1, 0, 1 },
             { -2, 0, 2 },
