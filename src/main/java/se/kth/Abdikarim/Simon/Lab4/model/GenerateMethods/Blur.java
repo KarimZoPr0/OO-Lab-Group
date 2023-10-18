@@ -1,6 +1,11 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
+
+/**
+ * Adds a blur effect on an image
+ * Implements IProcessor to achieve strategy pattern for processing image
+ */
 public class Blur implements IProcessor
 {
     private double[][] kernel = {
@@ -9,6 +14,10 @@ public class Blur implements IProcessor
             { 1.0 / 9, 1.0 / 9, 1.0 / 9 }
     };
 
+    /** Uses a 3x3 kernel for the blurring operation
+     * @param originalImg the original image representing a pixelMatrix
+     * @return the output image representing a blurred version of originalImg
+     */
     @Override
     public int[][] processImage( int[][] originalImg )
     {
@@ -49,7 +58,6 @@ public class Blur implements IProcessor
                 outputImg[ y ][ x ] = ( a << 24 ) | ( r << 16 ) | ( g << 8 ) | b;
             }
         }
-
         return outputImg;
     }
 }

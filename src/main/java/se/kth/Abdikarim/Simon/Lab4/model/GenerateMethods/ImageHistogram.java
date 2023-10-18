@@ -1,13 +1,21 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
 
+
+/**
+ * Shows a histogram based on image pixel frequency (rgb)
+ */
 public class ImageHistogram
 {
-
     public ImageHistogram( )
     {
 
     }
 
+    /**
+     * Increments the rgb count in the pixel Matrix
+     * @param imageData the original image representing a pixelMatrix
+     * @return the output image representing frequency of the rgb
+     */
     public int[][] calculateHistogram( int[][] imageData )
     {
         var pixelMatrix = new int[ 3 ][ 256 ];

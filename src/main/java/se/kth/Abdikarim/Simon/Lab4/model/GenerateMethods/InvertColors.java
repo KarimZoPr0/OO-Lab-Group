@@ -1,7 +1,10 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
-
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
+/**
+ * Inverts the color of an image
+ * Implements IProcessor to achieve strategy pattern for processing image
+ */
 public class InvertColors implements IProcessor
 {
 
@@ -10,6 +13,11 @@ public class InvertColors implements IProcessor
 
     }
 
+    /**
+     * Inverts the image by subtracting the r g and b from 255
+     * @param originalImg the original representing a 2D pixel  matrix
+     * @return the inverted version of the image
+     */
     @Override
     public int[][] processImage( int[][] originalImg )
     {

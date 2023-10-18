@@ -33,7 +33,7 @@ public class ImageProcessingController
     {
         if ( !view.pixelReaderExists( ) ) return;
         var originalImg = FileIO.getPixelMatrix( view.getOriginalImage( ) );
-        var pixelMatrix = model.processImage( originalImg );
+        var pixelMatrix = model.getProcessor( ).processImage( originalImg );
         view.updateGenerateView( model.getProcessorState( ) );
         view.setImage( pixelMatrix );
     }
@@ -41,7 +41,7 @@ public class ImageProcessingController
     public void handleHistogram( )
     {
         if ( !view.pixelReaderExists( ) ) return;
-        int[][] pixelMatrix = model.generateHistogram( FileIO.getPixelMatrix( view.getOriginalImage( ) ) );
+        int[][] pixelMatrix = model.getHistogram( ).calculateHistogram( FileIO.getPixelMatrix( view.getOriginalImage( ) ) );
         view.updateChartHistogram( pixelMatrix );
     }
 }

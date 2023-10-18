@@ -1,6 +1,10 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
+/**
+ * Adds contrast to image using window level
+ * Implements IProcessor to achieve strategy pattern for processing image
+ */
 public class Contrast implements IProcessor
 {
     private int level = 135;
@@ -11,6 +15,9 @@ public class Contrast implements IProcessor
 
     }
 
+    /**
+     * @return An array which maps image pixel to a new value based on window level
+     */
     public int[] generateLUT( )
     {
         int MP = 255;
@@ -25,17 +32,23 @@ public class Contrast implements IProcessor
         }
 
         for ( int i = a; i <= b; i++ )
-        { // changed to i <= b
+        {
             LUT[ i ] = Math.round( ( float ) MP / window * ( i - a ) );
         }
 
         for ( int i = b + 1; i <= MP; i++ )
-        { // changed to i <= MP
+        {
             LUT[ i ] = MP;
         }
         return LUT;
     }
 
+
+    /**
+     * Uses LUT for the operation
+     * @param originalImg the original image to apply contrast on
+     * @return The output image representing a contrasted version of the original image
+     */
     @Override
     public int[][] processImage( int[][] originalImg )
     {
@@ -78,13 +91,4 @@ public class Contrast implements IProcessor
         System.out.println( level );
     }
 
-    public int getLevel( )
-    {
-        return level;
-    }
-
-    public int getWindow( )
-    {
-        return window;
-    }
 }

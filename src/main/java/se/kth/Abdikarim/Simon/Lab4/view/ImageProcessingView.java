@@ -19,6 +19,8 @@ import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 import se.kth.Abdikarim.Simon.Lab4.model.ProcessorState;
 
+
+
 public class ImageProcessingView extends BorderPane
 {
     private final PauseTransition windowDebounce;
