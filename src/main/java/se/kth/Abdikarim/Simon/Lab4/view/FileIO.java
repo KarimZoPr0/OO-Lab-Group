@@ -13,6 +13,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 
+/**
+ * Handles read and write images to/from files
+ */
 public class FileIO
 {
     private FileChooser fileChooser;
@@ -24,6 +27,11 @@ public class FileIO
         fileChooser = new FileChooser();
     }
 
+    /**
+     * Sets filter to make it easier for the user what images are allowed
+     * Creates an image based on file url
+     * Returns if image doesn't exist or exception has been caught
+     */
     public void loadImage()
     {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter( "Image files", "*.png", ".jpg", "*.bmp");
@@ -40,6 +48,11 @@ public class FileIO
         }
     }
 
+    /**
+     * Sets filter to make it easier for the user what images are allowed
+     *
+     * @param image writes to hard-drive
+     */
     public void saveProcessedImage(Image image) {
         try {
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -57,6 +70,15 @@ public class FileIO
         }
     }
 
+    /**
+     * Converts an image to 2D array of ARGB pixel data
+     *
+     * @param image
+     * Obtains a PixelReader object from image
+     * Iterates and stores the argb values of each pixel
+     *
+     * @return pixelMatrix
+     */
     public static int[][] getPixelMatrix( Image image )
     {
         int width = ( int ) image.getWidth( );
@@ -75,6 +97,15 @@ public class FileIO
         return pixelMatrix;
     }
 
+    /**
+     * Converts a 2D array of ARGB pixel data to image
+     *
+     * @param pixelMatrix
+     * Obtains a PixelWrite object and writes the pixel
+     * Iterates and retrieves the argb values of each pixel
+     *
+     * @return image
+     */
     public static Image getImage( int[][] pixelMatrix )
     {
         // Create a writable image

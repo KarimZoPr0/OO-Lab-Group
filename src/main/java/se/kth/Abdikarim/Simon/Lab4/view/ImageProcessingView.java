@@ -21,6 +21,10 @@ import se.kth.Abdikarim.Simon.Lab4.model.ProcessorState;
 
 
 
+/**
+ *  Creates a view for the application
+ *  Extends BorderPane to access layout manager
+ */
 public class ImageProcessingView extends BorderPane
 {
     private final PauseTransition windowDebounce;
@@ -41,6 +45,12 @@ public class ImageProcessingView extends BorderPane
 
     private Alert alert;
 
+    /**
+     * Public visibility
+     *
+     * Initilize view
+     * @param model
+     */
     public ImageProcessingView( ImageProcessingModel model )
     {
         windowDebounce = new PauseTransition( Duration.millis( 300 ) );
@@ -65,6 +75,12 @@ public class ImageProcessingView extends BorderPane
         addListenerToSlider( model, controller );
     }
 
+    /**
+     * Creates a menubar for the application
+     *
+     * @param controller the instance to which menu item is delegated
+     *
+     */
     private void createMenuBar( ImageProcessingController controller )
     {
         updateBtn.setOnAction( e ->
@@ -121,6 +137,13 @@ public class ImageProcessingView extends BorderPane
         menuBar.getMenus( ).addAll( fileMenu, generateMenu );
     }
 
+    /**
+     * Listen for sliders after 300 ms and sets the new value
+     *
+     * @param model,
+     * @param controller
+     * Adds a listener, observes changes from value only if timer is finished
+     */
     private void addListenerToSlider( ImageProcessingModel model, ImageProcessingController controller )
     {
         windowSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
@@ -151,12 +174,20 @@ public class ImageProcessingView extends BorderPane
         this.stage = stage;
     }
 
+    /**
+     * Load image, and set it to firstview
+     */
     public void loadImage( )
     {
         fileIO.loadImage( );
         firstView.setImage( fileIO.getImage( ) );
     }
 
+    /**
+     * Updates Histogram with the ARGB values
+     *
+     * @param pixelMatrix a 2D array containing color channels for red, green, blue
+     */
     public void updateChartHistogram( int[][] pixelMatrix )
     {
         XYChart.Series seriesRed = new XYChart.Series( );
@@ -184,6 +215,11 @@ public class ImageProcessingView extends BorderPane
         return menuBar;
     }
 
+    /**
+     * Controls if image is loaded to fileIO
+     * else show warning
+     * @return true or false
+     */
     public boolean pixelReaderExists( )
     {
         if ( fileIO.getImage( ) != null )
@@ -239,6 +275,11 @@ public class ImageProcessingView extends BorderPane
         return ( int ) windowSlider.getValue( );
     }
 
+    /**
+     * @param state the object to update.
+     * The method configures the VBox according to the state and updates the view
+     * If pixelReader doesn't exist, return
+     */
         public void updateGenerateView( ProcessorState state )
     {
         if ( !pixelReaderExists( ) ) return;
@@ -281,6 +322,10 @@ public class ImageProcessingView extends BorderPane
         BorderPane.setMargin( vBox, new Insets( 5, 10, 5, 5 ) );
     }
 
+    /**
+     *  Check if firstView exist,
+     *  save image or show warning
+     */
     public void saveImage( )
     {
         if(firstView.getImage() != null)
