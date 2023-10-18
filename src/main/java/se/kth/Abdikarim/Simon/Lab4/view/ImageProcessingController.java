@@ -2,6 +2,9 @@ package se.kth.Abdikarim.Simon.Lab4.view;
 
 import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
 
+/**
+ *  Manages all the controller methods
+ */
 public class ImageProcessingController
 {
     private ImageProcessingModel model;
@@ -29,6 +32,10 @@ public class ImageProcessingController
         System.exit( 0 );
     }
 
+    /**
+     * Controlls if image exists
+     * Sets image based on pixelmatrix
+     */
     public void generateImage( )
     {
         if ( !view.pixelReaderExists( ) ) return;
