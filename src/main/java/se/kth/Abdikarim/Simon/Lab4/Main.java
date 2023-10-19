@@ -5,16 +5,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
-import se.kth.Abdikarim.Simon.Lab4.view.ImageProcessingView;
+import se.kth.Abdikarim.Simon.Lab4.model.ProcessingModel;
+import se.kth.Abdikarim.Simon.Lab4.view.ProcessingView;
 
 public class Main extends Application
 {
     @Override
     public void start( Stage primaryStage )
     {
-        ImageProcessingModel model = new ImageProcessingModel();
-        ImageProcessingView view = new ImageProcessingView(model);
+        ProcessingModel model = new ProcessingModel();
+        ProcessingView view = new ProcessingView(model);
 
         // Create a menu bar
         MenuBar menuBar = view.getMenuBar();

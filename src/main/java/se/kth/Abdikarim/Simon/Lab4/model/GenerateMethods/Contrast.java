@@ -27,7 +27,7 @@ public class Contrast implements IProcessor
         int b = Math.min( level + window / 2, MP );
 
         for ( int i = 0; i < a; i++ )
-        { // changed to i < a
+        {
             LUT[ i ] = 0;
         }
 
@@ -90,5 +90,4 @@ public class Contrast implements IProcessor
         this.level = level;
         System.out.println( level );
     }
-
 }

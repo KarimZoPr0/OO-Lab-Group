@@ -2,7 +2,7 @@ package se.kth.Abdikarim.Simon.Lab4.model;
 
 
 /**
- * States for the view
+ * States for each generate method
  */
 public enum ProcessorState
 {

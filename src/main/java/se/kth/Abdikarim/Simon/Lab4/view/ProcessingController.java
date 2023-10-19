@@ -1,17 +1,17 @@
 package se.kth.Abdikarim.Simon.Lab4.view;
 
 import javafx.application.Platform;
-import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
+import se.kth.Abdikarim.Simon.Lab4.model.ProcessingModel;
 
 /**
  *  Manages all the controller methods
  */
-public class ImageProcessingController
+public class ProcessingController
 {
-    private final ImageProcessingModel model;
-    private final ImageProcessingView view;
+    private final ProcessingModel model;
+    private final ProcessingView view;
 
-    public ImageProcessingController( ImageProcessingModel model, ImageProcessingView view )
+    public ProcessingController( ProcessingModel model, ProcessingView view )
     {
         this.model = model;
         this.view = view;
@@ -34,7 +34,7 @@ public class ImageProcessingController
     }
 
     /**
-     * Controlls if image exists
+     * Checks if image exists
      * Sets image based on pixelmatrix
      */
     public void generateImage( )
@@ -46,6 +46,11 @@ public class ImageProcessingController
         view.setImage( pixelMatrix );
     }
 
+    /**
+     * Checks if file exists
+     * Calculates histogram
+     * Updates the ChartHistogram
+     */
     public void handleHistogram( )
     {
         if ( !view.pixelReaderExists( ) ) return;

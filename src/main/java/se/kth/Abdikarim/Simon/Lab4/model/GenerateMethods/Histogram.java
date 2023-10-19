@@ -4,9 +4,9 @@ package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
 /**
  * Shows a histogram based on image pixel frequency (rgb)
  */
-public class ImageHistogram
+public class Histogram
 {
-    public ImageHistogram( )
+    public Histogram( )
     {
 
     }

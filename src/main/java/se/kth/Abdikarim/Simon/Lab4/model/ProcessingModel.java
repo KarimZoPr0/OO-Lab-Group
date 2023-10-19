@@ -1,43 +1,60 @@
 package se.kth.Abdikarim.Simon.Lab4.model;
 
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Contrast;
-import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.ImageHistogram;
+import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.Histogram;
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
 /**
  * Manages all the processing methods
  */
-public class ImageProcessingModel
+public class ProcessingModel
 {
-    private final ImageHistogram histogram;
+    private final Histogram histogram;
     private IProcessor processor;
     private ProcessorState processorState;
 
-    public ImageProcessingModel( )
+    public ProcessingModel( )
     {
-        histogram = new ImageHistogram();
+        histogram = new Histogram();
         processor = new Contrast();
         processorState = ProcessorState.NONE;
     }
-    public ImageHistogram getHistogram( )
+
+    /**
+     * @return the histogram
+     */
+    public Histogram getHistogram( )
     {
         return histogram;
     }
 
+    /**
+     * @return the processor
+     */
     public IProcessor getProcessor( )
     {
         return processor;
     }
 
+    /**
+     * @param processor the new processor
+     */
     public void setProcessor( IProcessor processor )
     {
         this.processor = processor;
     }
 
+    /**
+     * @param processorState the new processState
+     */
     public void setProcessorState( ProcessorState processorState )
     {
         this.processorState = processorState;
     }
+
+    /**
+     * @return The processorState
+     */
     public ProcessorState getProcessorState( )
     {
         return processorState;

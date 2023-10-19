@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods.*;
-import se.kth.Abdikarim.Simon.Lab4.model.ImageProcessingModel;
+import se.kth.Abdikarim.Simon.Lab4.model.ProcessingModel;
 import se.kth.Abdikarim.Simon.Lab4.model.ProcessorState;
 
 
@@ -24,7 +24,7 @@ import se.kth.Abdikarim.Simon.Lab4.model.ProcessorState;
  *  Creates a view for the application
  *  Extends BorderPane to access layout manager
  */
-public class ImageProcessingView extends BorderPane
+public class ProcessingView extends BorderPane
 {
     private final PauseTransition windowDebounce;
     private final PauseTransition levelDebounce;
@@ -35,7 +35,7 @@ public class ImageProcessingView extends BorderPane
     private final LineChart<String, Number> chartHistogram;
     private final Slider windowSlider;
     private final Slider levelSlider;
-    private final ImageProcessingModel model;
+    private final ProcessingModel model;
     private final Button updateBtn;
     private final Label windowLabel;
     private final Label levelLabel;
@@ -49,7 +49,7 @@ public class ImageProcessingView extends BorderPane
      * Initilize view
      * @param model
      */
-    public ImageProcessingView( ImageProcessingModel model )
+    public ProcessingView( ProcessingModel model )
     {
         windowDebounce = new PauseTransition( Duration.millis( 300 ) );
         levelDebounce = new PauseTransition( Duration.millis( 300 ) );
@@ -67,7 +67,7 @@ public class ImageProcessingView extends BorderPane
         chartHistogram.setCreateSymbols( false );
         windowSlider = new Slider( );
         levelSlider = new Slider( );
-        ImageProcessingController controller = new ImageProcessingController( model, this );
+        ProcessingController controller = new ProcessingController( model, this );
         createMenuBar( controller );
 
         addListenerToSlider( model, controller );
@@ -79,7 +79,7 @@ public class ImageProcessingView extends BorderPane
      * @param controller the instance to which menu item is delegated
      *
      */
-    private void createMenuBar( ImageProcessingController controller )
+    private void createMenuBar( ProcessingController controller )
     {
         updateBtn.setOnAction( e ->
         {
@@ -142,7 +142,7 @@ public class ImageProcessingView extends BorderPane
      * @param controller
      * Adds a listener, observes changes from value only if timer is finished
      */
-    private void addListenerToSlider( ImageProcessingModel model, ImageProcessingController controller )
+    private void addListenerToSlider( ProcessingModel model, ProcessingController controller )
     {
         windowSlider.valueProperty( ).addListener( ( observableValue, oldValue, newValue ) ->
         {
@@ -273,7 +273,7 @@ public class ImageProcessingView extends BorderPane
      * The method configures the VBox according to the state and updates the view
      * If pixelReader doesn't exist, return
      */
-        public void updateGenerateView( ProcessorState state )
+    public void updateGenerateView( ProcessorState state )
     {
         if ( !pixelReaderExists( ) ) return;
         model.setProcessorState( state );

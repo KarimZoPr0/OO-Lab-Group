@@ -1,7 +1,6 @@
 package se.kth.Abdikarim.Simon.Lab4.model.GenerateMethods;
 import se.kth.Abdikarim.Simon.Lab4.view.IProcessor;
 
-
 /**
  * Adds a blur effect on an image
  * Implements IProcessor to achieve strategy pattern for processing image
